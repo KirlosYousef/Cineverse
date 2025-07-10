@@ -15,10 +15,8 @@ class NetworkService: NetworkServiceProtocol {
     
     init() {
         // Get API key from configuration
-        guard let path = Bundle.main.path(forResource: "Secrets", ofType: "xcconfig"),
-              let config = NSDictionary(contentsOfFile: path),
-              let apiKey = config["API_KEY"] as? String else {
-            fatalError("API_KEY not found in Secrets.xcconfig")
+        guard let apiKey = Bundle.main.infoDictionary?["TMDBApiKey"] as? String else {
+            fatalError("TMDBApiKey not found in Info.plist")
         }
         self.apiKey = apiKey
     }
@@ -31,11 +29,18 @@ class NetworkService: NetworkServiceProtocol {
             return
         }
         
+        AF.request(url).responseData { rawResponse in
+            if let data = rawResponse.data {
+                print("RAW RESPONSE: \(String(data: data, encoding: .utf8) ?? "<nil>")")
+            }
+        }
         AF.request(url).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let data):
+                print("data: \(data)")
                 completion(.success(data))
             case .failure(let error):
+                print("error: \(error)")
                 completion(.failure(error))
             }
         }

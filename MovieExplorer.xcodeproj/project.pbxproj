@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BC2A7FB62E1F93F000F835A1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BC2A7FB52E1F93F000F835A1 /* Alamofire */; };
 		BC2A7FB92E1F93FA00F835A1 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = BC2A7FB82E1F93FA00F835A1 /* SDWebImage */; };
+		BC2A7FE22E1FAFC100F835A1 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		BC2A7F022E1EBB7300F835A1 /* MovieExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2A7F182E1EBB7700F835A1 /* MovieExplorerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieExplorerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2A7F222E1EBB7700F835A1 /* MovieExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieExplorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -99,6 +101,7 @@
 				BC2A7F1B2E1EBB7700F835A1 /* MovieExplorerTests */,
 				BC2A7F252E1EBB7700F835A1 /* MovieExplorerUITests */,
 				BC2A7F032E1EBB7300F835A1 /* Products */,
+				BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -238,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC2A7FE22E1FAFC100F835A1 /* Secrets.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +363,7 @@
 		};
 		BC2A7F2E2E1EBB7700F835A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -423,6 +428,7 @@
 		};
 		BC2A7F2F2E1EBB7700F835A1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

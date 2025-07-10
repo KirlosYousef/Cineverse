@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MoviesViewController: UIViewController {
     
@@ -25,14 +26,33 @@ class MoviesViewController: UIViewController {
         return collectionView
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemRed
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // MARK: - Properties
-    private var movies: [Movie] = []
+    private let viewModel = MoviesViewModel()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        loadPlaceholderData()
+        bindViewModel()
+        viewModel.fetchMovies()
     }
     
     // MARK: - Setup
@@ -41,31 +61,50 @@ class MoviesViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
+        view.addSubview(errorLabel)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            errorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
-    // MARK: - Placeholder Data
-    private func loadPlaceholderData() {
-        // Create placeholder movies for UI testing
-        movies = [
-            Movie(id: 1, title: "Movie title 1", overview: "Movie overview 1", posterPath: nil, releaseDate: "2025-07-10", voteAverage: 9.0),
-            Movie(id: 2, title: "Movie title 2", overview: "Movie overview 2", posterPath: nil, releaseDate: "2025-07-10", voteAverage: 9.0),
-            Movie(id: 3, title: "Movie title 3", overview: "Movie overview 3", posterPath: nil, releaseDate: "2025-07-10", voteAverage: 9.0)
-        ]
-        collectionView.reloadData()
+    private func bindViewModel() {
+        viewModel.onMoviesChanged = { [weak self] in
+            self?.collectionView.reloadData()
+            self?.errorLabel.isHidden = true
+        }
+        viewModel.onLoadingChanged = { [weak self] isLoading in
+            if isLoading {
+                self?.activityIndicator.startAnimating()
+            } else {
+                self?.activityIndicator.stopAnimating()
+            }
+        }
+        viewModel.onErrorMessageChanged = { [weak self] message in
+            if let message = message {
+                self?.errorLabel.text = message
+                self?.errorLabel.isHidden = false
+            } else {
+                self?.errorLabel.isHidden = true
+            }
+        }
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension MoviesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return viewModel.movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -73,7 +112,7 @@ extension MoviesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let movie = movies[indexPath.item]
+        let movie = viewModel.movies[indexPath.item]
         cell.configure(with: movie)
         return cell
     }
@@ -95,7 +134,7 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionViewDelegate
 extension MoviesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie = movies[indexPath.item]
+        let movie = viewModel.movies[indexPath.item]
         print("Selected movie: \(movie.title)")
         // TODO: Navigate to movie details screen
     }

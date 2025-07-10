@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MovieCell: UICollectionViewCell {
     
@@ -106,7 +107,11 @@ class MovieCell: UICollectionViewCell {
         posterImageView.image = UIImage(systemName: "film")
         posterImageView.tintColor = .systemGray3
         
-        // TODO: Load actual poster image using SDWebImage
+        // Load actual poster image using SDWebImage
+        if let url = movie.posterURL {
+            posterImageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "film"))
+            posterImageView.tintColor = nil
+        }
     }
     
     func setFavorite(_ isFavorite: Bool) {
