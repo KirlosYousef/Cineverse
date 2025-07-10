@@ -35,12 +35,13 @@ class MovieCell: UICollectionViewCell {
     }()
     
     private let favoriteButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton()
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
         button.tintColor = .systemRed
-        button.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
-        button.layer.cornerRadius = 15
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -91,10 +92,10 @@ class MovieCell: UICollectionViewCell {
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8),
             
             // Favorite Button
-            favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            favoriteButton.widthAnchor.constraint(equalToConstant: 30),
-            favoriteButton.heightAnchor.constraint(equalToConstant: 30)
+            favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 32),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
     
@@ -133,4 +134,4 @@ class MovieCell: UICollectionViewCell {
         movieId = nil
         onFavoriteTapped = nil
     }
-} 
+}

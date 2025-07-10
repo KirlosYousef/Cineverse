@@ -10,6 +10,7 @@ import Foundation
 class MoviesViewModel {
     // MARK: - Properties
     private let getPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol
+    private let favoritesService: FavoritesServiceProtocol
     
     private(set) var movies: [Movie] = [] {
         didSet { onMoviesChanged?() }
@@ -29,8 +30,10 @@ class MoviesViewModel {
     var onErrorMessageChanged: ((String?) -> Void)?
     
     // MARK: - Init
-    init(getPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol = DIContainer.shared.getPopularMoviesUseCase) {
+    init(getPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol = DIContainer.shared.getPopularMoviesUseCase,
+         favoritesService: FavoritesServiceProtocol = DIContainer.shared.favoritesService) {
         self.getPopularMoviesUseCase = getPopularMoviesUseCase
+        self.favoritesService = favoritesService
     }
     
     // MARK: - Methods
@@ -48,5 +51,14 @@ class MoviesViewModel {
                 }
             }
         }
+    }
+    
+    func isFavorite(movieId: Int) -> Bool {
+        return favoritesService.isFavorite(movieId: movieId)
+    }
+    
+    func toggleFavorite(movieId: Int) {
+        favoritesService.toggleFavorite(movieId: movieId)
+        onMoviesChanged?()
     }
 }

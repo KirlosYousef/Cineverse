@@ -114,6 +114,11 @@ extension MoviesViewController: UICollectionViewDataSource {
         
         let movie = viewModel.movies[indexPath.item]
         cell.configure(with: movie)
+        cell.setFavorite(viewModel.isFavorite(movieId: movie.id))
+        cell.onFavoriteTapped = { [weak self] movieId in
+            self?.viewModel.toggleFavorite(movieId: movieId)
+            collectionView.reloadItems(at: [indexPath])
+        }
         return cell
     }
 }
