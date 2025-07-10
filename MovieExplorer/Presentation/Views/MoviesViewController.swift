@@ -13,16 +13,17 @@ class MoviesViewController: UIViewController {
     // MARK: - UI Components
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 15
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        layout.minimumInteritemSpacing = 16
+        layout.minimumLineSpacing = 24
+        layout.sectionInset = UIEdgeInsets(top: 24, left: 16, bottom: 24, right: 16)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.identifier)
+        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
@@ -30,13 +31,14 @@ class MoviesViewController: UIViewController {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
+        indicator.color = .white
         return indicator
     }()
     
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemRed
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isHidden = true
@@ -57,8 +59,8 @@ class MoviesViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        title = "Popular Movies"
-        view.backgroundColor = .systemBackground
+        setupNavigationBar()
+        setupBackground()
         
         view.addSubview(collectionView)
         view.addSubview(activityIndicator)
@@ -69,13 +71,41 @@ class MoviesViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             errorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
+    }
+    
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
+        ]
+        
+        title = "Movies"
+    }
+    
+    private func setupBackground() {
+        view.backgroundColor = .black
+        
+        // Add gradient background
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0).cgColor,
+            UIColor.black.cgColor
+        ]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     private func bindViewModel() {
@@ -126,11 +156,11 @@ extension MoviesViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension MoviesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat = 20
-        let spacing: CGFloat = 10
-        let availableWidth = collectionView.bounds.width - padding * 2 - spacing
+        let padding: CGFloat = 32
+        let spacing: CGFloat = 16
+        let availableWidth = collectionView.bounds.width - padding - spacing
         let itemWidth = availableWidth / 2
-        let itemHeight = itemWidth * 1.5 // Aspect ratio for movie posters
+        let itemHeight = itemWidth * 1.6 // Taller aspect ratio for movie posters
         
         return CGSize(width: itemWidth, height: itemHeight)
     }
