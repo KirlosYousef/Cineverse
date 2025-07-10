@@ -135,7 +135,8 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout {
 extension MoviesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = viewModel.movies[indexPath.item]
-        print("Selected movie: \(movie.title)")
-        // TODO: Navigate to movie details screen
+        let detailsViewModel = MovieDetailsViewModel(movie: movie)
+        let detailsVC = MovieDetailsViewController(viewModel: detailsViewModel)
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
 } 
