@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BC2A7FB62E1F93F000F835A1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BC2A7FB52E1F93F000F835A1 /* Alamofire */; };
+		BC2A7FB92E1F93FA00F835A1 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = BC2A7FB82E1F93FA00F835A1 /* SDWebImage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		BC2A7F192E1EBB7700F835A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC2A7FB92E1F93FA00F835A1 /* SDWebImage in Frameworks */,
+				BC2A7FB62E1F93F000F835A1 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +132,8 @@
 			);
 			name = MovieExplorer;
 			packageProductDependencies = (
+				BC2A7FB52E1F93F000F835A1 /* Alamofire */,
+				BC2A7FB82E1F93FA00F835A1 /* SDWebImage */,
 			);
 			productName = MovieExplorer;
 			productReference = BC2A7F022E1EBB7300F835A1 /* MovieExplorer.app */;
@@ -208,6 +217,10 @@
 			);
 			mainGroup = BC2A7EF92E1EBB7300F835A1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BC2A7FB42E1F93F000F835A1 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				BC2A7FB72E1F93FA00F835A1 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BC2A7F032E1EBB7300F835A1 /* Products */;
 			projectDirPath = "";
@@ -585,6 +598,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BC2A7FB42E1F93F000F835A1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		BC2A7FB72E1F93FA00F835A1 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BC2A7FB52E1F93F000F835A1 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC2A7FB42E1F93F000F835A1 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		BC2A7FB82E1F93FA00F835A1 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC2A7FB72E1F93FA00F835A1 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BC2A7EFA2E1EBB7300F835A1 /* Project object */;
 }
