@@ -9,18 +9,10 @@
 /* Begin PBXBuildFile section */
 		BC2A7FB62E1F93F000F835A1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BC2A7FB52E1F93F000F835A1 /* Alamofire */; };
 		BC2A7FB92E1F93FA00F835A1 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = BC2A7FB82E1F93FA00F835A1 /* SDWebImage */; };
-		BC2A7FE22E1FAFC100F835A1 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		BC2A7F192E1EBB7700F835A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC2A7EFA2E1EBB7300F835A1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BC2A7F012E1EBB7300F835A1;
-			remoteInfo = MovieExplorer;
-		};
-		BC2A7F232E1EBB7700F835A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC2A7EFA2E1EBB7300F835A1 /* Project object */;
 			proxyType = 1;
@@ -32,7 +24,6 @@
 /* Begin PBXFileReference section */
 		BC2A7F022E1EBB7300F835A1 /* MovieExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2A7F182E1EBB7700F835A1 /* MovieExplorerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieExplorerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC2A7F222E1EBB7700F835A1 /* MovieExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieExplorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,11 +51,6 @@
 			path = MovieExplorerTests;
 			sourceTree = "<group>";
 		};
-		BC2A7F252E1EBB7700F835A1 /* MovieExplorerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MovieExplorerUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,13 +70,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BC2A7F1F2E1EBB7700F835A1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -99,7 +78,6 @@
 			children = (
 				BC2A7F042E1EBB7300F835A1 /* MovieExplorer */,
 				BC2A7F1B2E1EBB7700F835A1 /* MovieExplorerTests */,
-				BC2A7F252E1EBB7700F835A1 /* MovieExplorerUITests */,
 				BC2A7F032E1EBB7300F835A1 /* Products */,
 				BC2A7FE12E1FAFC100F835A1 /* Secrets.xcconfig */,
 			);
@@ -110,7 +88,6 @@
 			children = (
 				BC2A7F022E1EBB7300F835A1 /* MovieExplorer.app */,
 				BC2A7F182E1EBB7700F835A1 /* MovieExplorerTests.xctest */,
-				BC2A7F222E1EBB7700F835A1 /* MovieExplorerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,29 +142,6 @@
 			productReference = BC2A7F182E1EBB7700F835A1 /* MovieExplorerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BC2A7F212E1EBB7700F835A1 /* MovieExplorerUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BC2A7F332E1EBB7700F835A1 /* Build configuration list for PBXNativeTarget "MovieExplorerUITests" */;
-			buildPhases = (
-				BC2A7F1E2E1EBB7700F835A1 /* Sources */,
-				BC2A7F1F2E1EBB7700F835A1 /* Frameworks */,
-				BC2A7F202E1EBB7700F835A1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BC2A7F242E1EBB7700F835A1 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				BC2A7F252E1EBB7700F835A1 /* MovieExplorerUITests */,
-			);
-			name = MovieExplorerUITests;
-			packageProductDependencies = (
-			);
-			productName = MovieExplorerUITests;
-			productReference = BC2A7F222E1EBB7700F835A1 /* MovieExplorerUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -196,16 +150,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					BC2A7F012E1EBB7300F835A1 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 					BC2A7F172E1EBB7700F835A1 = {
-						CreatedOnToolsVersion = 26.0;
-						TestTargetID = BC2A7F012E1EBB7300F835A1;
-					};
-					BC2A7F212E1EBB7700F835A1 = {
 						CreatedOnToolsVersion = 26.0;
 						TestTargetID = BC2A7F012E1EBB7300F835A1;
 					};
@@ -231,7 +181,6 @@
 			targets = (
 				BC2A7F012E1EBB7300F835A1 /* MovieExplorer */,
 				BC2A7F172E1EBB7700F835A1 /* MovieExplorerTests */,
-				BC2A7F212E1EBB7700F835A1 /* MovieExplorerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -241,18 +190,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC2A7FE22E1FAFC100F835A1 /* Secrets.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BC2A7F162E1EBB7700F835A1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BC2A7F202E1EBB7700F835A1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,13 +217,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BC2A7F1E2E1EBB7700F835A1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -290,11 +224,6 @@
 			isa = PBXTargetDependency;
 			target = BC2A7F012E1EBB7300F835A1 /* MovieExplorer */;
 			targetProxy = BC2A7F192E1EBB7700F835A1 /* PBXContainerItemProxy */;
-		};
-		BC2A7F242E1EBB7700F835A1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BC2A7F012E1EBB7300F835A1 /* MovieExplorer */;
-			targetProxy = BC2A7F232E1EBB7700F835A1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -494,7 +423,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L3Y3NN5H2E;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = KirlosYousef.MovieExplorerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -515,7 +444,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L3Y3NN5H2E;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = KirlosYousef.MovieExplorerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -525,44 +454,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MovieExplorer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MovieExplorer";
-			};
-			name = Release;
-		};
-		BC2A7F342E1EBB7700F835A1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L3Y3NN5H2E;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = KirlosYousef.MovieExplorerUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MovieExplorer;
-			};
-			name = Debug;
-		};
-		BC2A7F352E1EBB7700F835A1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L3Y3NN5H2E;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = KirlosYousef.MovieExplorerUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MovieExplorer;
 			};
 			name = Release;
 		};
@@ -592,15 +483,6 @@
 			buildConfigurations = (
 				BC2A7F312E1EBB7700F835A1 /* Debug */,
 				BC2A7F322E1EBB7700F835A1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BC2A7F332E1EBB7700F835A1 /* Build configuration list for PBXNativeTarget "MovieExplorerUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC2A7F342E1EBB7700F835A1 /* Debug */,
-				BC2A7F352E1EBB7700F835A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

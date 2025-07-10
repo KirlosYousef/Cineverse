@@ -8,7 +8,7 @@
 import Foundation
 
 /// Movie model representing a movie from TMDB API
-struct Movie: Codable, Identifiable {
+struct Movie: Equatable, Codable, Identifiable {
     let id: Int
     let title: String
     let overview: String
