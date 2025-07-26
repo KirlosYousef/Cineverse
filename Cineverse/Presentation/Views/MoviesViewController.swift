@@ -47,6 +47,24 @@ class MoviesViewController: UIViewController {
         return label
     }()
     
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search movies by name"
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.searchBarStyle = .minimal
+        searchBar.autocapitalizationType = .none
+        searchBar.searchTextField.textColor = .white
+        searchBar.searchTextField.leftView?.tintColor = .white
+        searchBar.searchTextField.rightView?.tintColor = .white
+        searchBar.searchTextField.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white.withAlphaComponent(0.7)
+        ]
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search movies by name",
+                                                                             attributes: attributes)
+        return searchBar
+    }()
+    
     // MARK: - Properties
     private let viewModel = MoviesViewModel()
     
@@ -54,9 +72,11 @@ class MoviesViewController: UIViewController {
     /// Called after the controller's view is loaded into memory. Sets up the UI, binds the view model, and fetches movies.
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
+        searchBar.delegate = self
         bindViewModel()
-        viewModel.fetchMovies()
+        viewModel.fetchMovies(reset: true)
     }
     
     // MARK: - Setup
@@ -64,13 +84,16 @@ class MoviesViewController: UIViewController {
     private func setupUI() {
         setupNavigationBar()
         setupBackground()
-        
+        view.addSubview(searchBar)
         view.addSubview(collectionView)
         view.addSubview(activityIndicator)
         view.addSubview(errorLabel)
-        
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -204,4 +227,27 @@ extension MoviesViewController: UICollectionViewDelegate {
         let detailsVC = MovieDetailsViewController(viewModel: detailsViewModel)
         navigationController?.pushViewController(detailsVC, animated: true)
     }
-} 
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        if offsetY > contentHeight - frameHeight * 1.5 {
+            // Near the bottom, load next page
+            if let visibleIndexPaths = collectionView.indexPathsForVisibleItems.sorted(by: { $0.item > $1.item }).first {
+                viewModel.loadNextPageIfNeeded(currentIndex: visibleIndexPaths.item)
+            }
+        }
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension MoviesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.updateSearchQuery(searchText)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+}

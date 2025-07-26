@@ -25,6 +25,13 @@ class MoviesViewModel {
         didSet { onErrorMessageChanged?(errorMessage) }
     }
     
+    // Pagination and search
+    private(set) var currentPage: Int = 1
+    private(set) var isLastPage: Bool = false
+    private(set) var searchQuery: String = ""
+    private var debounceTimer: Timer?
+    private let pageSize: Int = 20 // TMDB default
+
     // MARK: - Bindings
     var onMoviesChanged: (() -> Void)?
     var onLoadingChanged: ((Bool) -> Void)?
@@ -41,20 +48,47 @@ class MoviesViewModel {
         self.favoritesService = favoritesService
     }
     
-    // MARK: - Methods
-    /// Fetches the list of popular movies and updates the state accordingly.
-    func fetchMovies() {
+    // MARK: - Public API for ViewController
+    func fetchMovies(reset: Bool = false) {
+        if isLoading { return }
+        if reset {
+            currentPage = 1
+            isLastPage = false
+            movies = []
+        }
         isLoading = true
         errorMessage = nil
-        getPopularMoviesUseCase.execute { [weak self] result in
+        getPopularMoviesUseCase.execute(page: currentPage, query: searchQuery.isEmpty ? nil : searchQuery) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
-                case .success(let movies):
-                    self?.movies = movies
+                case .success(let newMovies):
+                    if reset {
+                        self?.movies = newMovies
+                    } else {
+                        self?.movies += newMovies
+                    }
+                    self?.isLastPage = newMovies.count < self?.pageSize ?? 20
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
+            }
+        }
+    }
+
+    func loadNextPageIfNeeded(currentIndex: Int) {
+        guard !isLastPage, !isLoading, currentIndex >= movies.count - 5 else { return }
+        currentPage += 1
+        fetchMovies(reset: false)
+    }
+
+    func updateSearchQuery(_ query: String) {
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            if self.searchQuery != query {
+                self.searchQuery = query
+                self.fetchMovies(reset: true)
             }
         }
     }

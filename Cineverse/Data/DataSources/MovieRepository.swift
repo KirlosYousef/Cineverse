@@ -18,11 +18,20 @@ class MovieRepository: MovieRepositoryProtocol {
         self.networkService = networkService
     }
     
-    /// Fetches the list of popular movies from the network service.
+    /// Fetches the list of popular movies from the network service with pagination and search support.
     ///
-    /// - Parameter completion: Completion handler with a Result containing an array of Movie objects or an error.
-    func getPopularMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        networkService.fetch(from: "/movie/popular") { (result: Result<MovieResponse, Error>) in
+    /// - Parameters:
+    ///   - page: The page number to fetch.
+    ///   - query: Optional search query for filtering movies by name.
+    ///   - completion: Completion handler with a Result containing an array of Movie objects or an error.
+    func getPopularMovies(page: Int, query: String?, completion: @escaping (Result<[Movie], Error>) -> Void) {
+        var endpoint = "/movie/popular"
+        var parameters: [String: Any] = ["page": page]
+        if let query = query, !query.isEmpty {
+            endpoint = "/search/movie"
+            parameters["query"] = query
+        }
+        networkService.fetch(from: endpoint, parameters: parameters) { (result: Result<MovieResponse, Error>) in
             switch result {
             case .success(let response):
                 completion(.success(response.results))

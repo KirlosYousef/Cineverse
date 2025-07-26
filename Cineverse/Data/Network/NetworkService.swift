@@ -26,15 +26,20 @@ class NetworkService: NetworkServiceProtocol {
     ///
     /// - Parameters:
     ///   - endpoint: The API endpoint to fetch data from (e.g., "/movie/popular").
+    ///   - parameters: Optional query parameters for the request (e.g., ["page": 2, "query": "batman"]).
     ///   - completion: Completion handler with a Result containing the decoded object or an error.
-    func fetch<T: Codable>(from endpoint: String, completion: @escaping (Result<T, Error>) -> Void) {
-        let urlString = "\(baseURL)\(endpoint)?api_key=\(apiKey)"
-        
+    func fetch<T: Codable>(from endpoint: String, parameters: [String: Any]? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+        var urlString = "\(baseURL)\(endpoint)?api_key=\(apiKey)"
+        if let parameters = parameters {
+            for (key, value) in parameters {
+                let valueString = String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+                urlString += "&\(key)=\(valueString)"
+            }
+        }
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
-        
         AF.request(url).responseData { rawResponse in
             if let data = rawResponse.data {
                 print("RAW RESPONSE: \(String(data: data, encoding: .utf8) ?? "<nil>")")

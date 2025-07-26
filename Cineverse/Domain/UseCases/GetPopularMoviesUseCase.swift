@@ -18,10 +18,13 @@ class GetPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol {
         self.repository = repository
     }
     
-    /// Executes the use case to fetch popular movies.
+    /// Executes the use case to fetch popular movies with pagination and search support.
     ///
-    /// - Parameter completion: Completion handler with a Result containing an array of Movie objects or an error.
-    func execute(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        repository.getPopularMovies(completion: completion)
+    /// - Parameters:
+    ///   - page: The page number to fetch.
+    ///   - query: Optional search query for filtering movies by name.
+    ///   - completion: Completion handler with a Result containing an array of Movie objects or an error.
+    func execute(page: Int, query: String?, completion: @escaping (Result<[Movie], Error>) -> Void) {
+        repository.getPopularMovies(page: page, query: query, completion: completion)
     }
 } 

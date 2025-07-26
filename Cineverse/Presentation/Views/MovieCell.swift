@@ -27,7 +27,7 @@ class MovieCell: UICollectionViewCell {
     
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
         imageView.backgroundColor = .clear
@@ -156,13 +156,9 @@ class MovieCell: UICollectionViewCell {
         movieId = movie.id
         titleLabel.text = movie.title
         
-        posterImageView.image = UIImage(systemName: "film")
-        posterImageView.tintColor = .systemGray3
-        
-        if let url = movie.posterURL {
-            posterImageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "film"))
-            posterImageView.tintColor = nil
-        }
+        let placeholderImage = UIImage(systemName: "film")?.withTintColor(.systemGray3.withAlphaComponent(0.4),
+                                                                           renderingMode: .alwaysOriginal)
+        posterImageView.sd_setImage(with: movie.posterURL, placeholderImage: placeholderImage)
     }
     
     /// Sets the favorite button's selected state.
