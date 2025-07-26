@@ -8,9 +8,11 @@
 import UIKit
 import SDWebImage
 
+/// Custom collection view cell for displaying a movie poster, title, and favorite button.
 class MovieCell: UICollectionViewCell {
     
     // MARK: - Static Properties
+    /// The reuse identifier for the cell.
     static let identifier = "MovieCell"
     
     // MARK: - UI Components
@@ -70,21 +72,26 @@ class MovieCell: UICollectionViewCell {
     }()
     
     // MARK: - Properties
+    /// The unique identifier of the movie displayed in this cell.
     private var movieId: Int?
+    /// Closure called when the favorite button is tapped, passing the movie ID.
     var onFavoriteTapped: ((Int) -> Void)?
     
     // MARK: - Initialization
+    /// Initializes the cell with the given frame and sets up the UI.
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
     }
     
+    /// Not implemented. Use init(frame:) instead.
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Setup
+    /// Sets up the UI components and adds them to the cell's content view.
     private func setupUI() {
         contentView.backgroundColor = .clear
         
@@ -106,6 +113,7 @@ class MovieCell: UICollectionViewCell {
         layer.masksToBounds = false
     }
     
+    /// Sets up layout constraints for the cell's subviews.
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -141,6 +149,9 @@ class MovieCell: UICollectionViewCell {
     }
     
     // MARK: - Configuration
+    /// Configures the cell with the given movie.
+    ///
+    /// - Parameter movie: The movie to display in the cell.
     func configure(with movie: Movie) {
         movieId = movie.id
         titleLabel.text = movie.title
@@ -154,17 +165,22 @@ class MovieCell: UICollectionViewCell {
         }
     }
     
+    /// Sets the favorite button's selected state.
+    ///
+    /// - Parameter isFavorite: Whether the movie is marked as favorite.
     func setFavorite(_ isFavorite: Bool) {
         favoriteButton.isSelected = isFavorite
     }
     
     // MARK: - Actions
+    /// Handles the favorite button tap event and notifies listeners.
     @objc private func favoriteButtonTapped() {
         guard let movieId = movieId else { return }
         onFavoriteTapped?(movieId)
     }
     
     // MARK: - Reuse
+    /// Prepares the cell for reuse by resetting its content and state.
     override func prepareForReuse() {
         super.prepareForReuse()
         posterImageView.image = nil

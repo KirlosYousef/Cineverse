@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage
 
+/// View controller displaying a grid of movies and handling user interactions.
 class MoviesViewController: UIViewController {
     
     // MARK: - UI Components
@@ -50,6 +51,7 @@ class MoviesViewController: UIViewController {
     private let viewModel = MoviesViewModel()
     
     // MARK: - Lifecycle
+    /// Called after the controller's view is loaded into memory. Sets up the UI, binds the view model, and fetches movies.
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -58,6 +60,7 @@ class MoviesViewController: UIViewController {
     }
     
     // MARK: - Setup
+    /// Sets up the main UI components and layout constraints.
     private func setupUI() {
         setupNavigationBar()
         setupBackground()
@@ -82,6 +85,7 @@ class MoviesViewController: UIViewController {
         ])
     }
     
+    /// Configures the navigation bar appearance and title.
     private func setupNavigationBar() {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
@@ -94,6 +98,7 @@ class MoviesViewController: UIViewController {
         title = "Movies"
     }
     
+    /// Sets up the background color and gradient for the view.
     private func setupBackground() {
         view.backgroundColor = .black
         
@@ -108,6 +113,7 @@ class MoviesViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    /// Binds the view model's state changes to UI updates.
     private func bindViewModel() {
         viewModel.onMoviesChanged = { [weak self] in
             self?.collectionView.reloadData()
@@ -133,10 +139,22 @@ class MoviesViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource
 extension MoviesViewController: UICollectionViewDataSource {
+    /// Returns the number of items (movies) in the given section.
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting this information.
+    ///   - section: The index number of the section.
+    /// - Returns: The number of items in the section.
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.movies.count
     }
     
+    /// Returns the configured cell for the given index path.
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting the cell.
+    ///   - indexPath: The index path specifying the location of the cell.
+    /// - Returns: A configured UICollectionViewCell.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
             return UICollectionViewCell()
@@ -155,6 +173,13 @@ extension MoviesViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension MoviesViewController: UICollectionViewDelegateFlowLayout {
+    /// Returns the size for the item at the specified index path.
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting the size.
+    ///   - collectionViewLayout: The layout object requesting the size.
+    ///   - indexPath: The index path of the item.
+    /// - Returns: The size for the item.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 32
         let spacing: CGFloat = 16
@@ -168,6 +193,11 @@ extension MoviesViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - UICollectionViewDelegate
 extension MoviesViewController: UICollectionViewDelegate {
+    /// Handles selection of a movie cell and navigates to the details screen.
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view informing the delegate about the new selection.
+    ///   - indexPath: The index path of the selected item.
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = viewModel.movies[indexPath.item]
         let detailsViewModel = MovieDetailsViewModel(movie: movie)

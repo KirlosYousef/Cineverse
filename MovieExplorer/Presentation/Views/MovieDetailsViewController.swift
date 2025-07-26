@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage
 
+/// View controller for displaying detailed information about a selected movie.
 class MovieDetailsViewController: UIViewController {
     private let viewModel: MovieDetailsViewModel
     
@@ -75,21 +76,27 @@ class MovieDetailsViewController: UIViewController {
         return label
     }()
     
+    /// Initializes the view controller with a MovieDetailsViewModel.
+    ///
+    /// - Parameter viewModel: The view model providing movie details.
     init(viewModel: MovieDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// Not implemented. Use init(viewModel:) instead.
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// Called after the controller's view is loaded into memory. Sets up the UI and configures the view with movie details.
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         configure()
     }
     
+    /// Sets up the UI components and layout constraints for the details screen.
     private func setupUI() {
         view.backgroundColor = .black
         setupNavigationBar()
@@ -158,17 +165,19 @@ class MovieDetailsViewController: UIViewController {
         ])
     }
     
+    /// Configures the navigation bar with a back button and title.
     private func setupNavigationBar() {
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton
-
         title = "Movie Details"
     }
     
+    /// Handles the back button tap event and navigates back to the previous screen.
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
     
+    /// Configures the view with movie details from the view model.
     private func configure() {
         titleLabel.text = viewModel.title
         overviewLabel.text = viewModel.overview

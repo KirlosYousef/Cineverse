@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// View model for managing and presenting a list of movies, including loading state and favorites.
 class MoviesViewModel {
     // MARK: - Properties
     private let getPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol
@@ -29,7 +30,11 @@ class MoviesViewModel {
     var onLoadingChanged: ((Bool) -> Void)?
     var onErrorMessageChanged: ((String?) -> Void)?
     
-    // MARK: - Init
+    /// Initializes the MoviesViewModel with dependencies.
+    ///
+    /// - Parameters:
+    ///   - getPopularMoviesUseCase: The use case for fetching popular movies.
+    ///   - favoritesService: The service for managing favorite movies.
     init(getPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol = DIContainer.shared.getPopularMoviesUseCase,
          favoritesService: FavoritesServiceProtocol = DIContainer.shared.favoritesService) {
         self.getPopularMoviesUseCase = getPopularMoviesUseCase
@@ -37,6 +42,7 @@ class MoviesViewModel {
     }
     
     // MARK: - Methods
+    /// Fetches the list of popular movies and updates the state accordingly.
     func fetchMovies() {
         isLoading = true
         errorMessage = nil
@@ -53,10 +59,17 @@ class MoviesViewModel {
         }
     }
     
+    /// Checks if a movie with the given ID is marked as favorite.
+    ///
+    /// - Parameter movieId: The unique identifier of the movie to check.
+    /// - Returns: A Boolean value indicating whether the movie is a favorite.
     func isFavorite(movieId: Int) -> Bool {
         return favoritesService.isFavorite(movieId: movieId)
     }
     
+    /// Toggles the favorite status for a movie with the given ID and notifies listeners.
+    ///
+    /// - Parameter movieId: The unique identifier of the movie to toggle as favorite.
     func toggleFavorite(movieId: Int) {
         favoritesService.toggleFavorite(movieId: movieId)
         onMoviesChanged?()
