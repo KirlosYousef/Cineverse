@@ -28,9 +28,12 @@ class MovieRepository: MovieRepositoryProtocol {
     ///   - completion: Completion handler with a Result containing an array of Movie objects or an error.
     func getPopularMovies(page: Int, query: String?, completion: @escaping (Result<[Movie], Error>) -> Void) {
         let cacheKey = "popular_movies_page_\(page)_query_\(query ?? "")"
-        if let cached: [Movie] = cacheService.get(forKey: cacheKey) {
-            completion(.success(cached))
-            return
+        var didReturnCache = false
+        var cached: [Movie]? = nil
+        if let cachedMovies: [Movie] = cacheService.get(forKey: cacheKey) {
+            cached = cachedMovies
+            didReturnCache = true
+            completion(.success(cachedMovies))
         }
         var endpoint = "/movie/popular"
         var parameters: [String: Any] = ["page": page]
@@ -41,10 +44,18 @@ class MovieRepository: MovieRepositoryProtocol {
         networkService.fetch(from: endpoint, parameters: parameters) { [weak self] (result: Result<MovieResponse, Error>) in
             switch result {
             case .success(let response):
-                self?.cacheService.set(response.results, forKey: cacheKey)
-                completion(.success(response.results))
+                // Only update if new data is different from cache
+                if cached != response.results {
+                    self?.cacheService.set(response.results, forKey: cacheKey)
+                    completion(.success(response.results))
+                } else if !didReturnCache {
+                    // If no cache was returned, return the result
+                    completion(.success(response.results))
+                }
             case .failure(let error):
-                completion(.failure(error))
+                if !didReturnCache {
+                    completion(.failure(error))
+                }
             }
         }
     }
