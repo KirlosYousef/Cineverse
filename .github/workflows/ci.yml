@@ -35,9 +35,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-xcode-
 
+              
       - name: Build Cineverse
         run: |
-          xcodebuild -project ./Cineverse.xcodeproj -scheme Cineverse \
+          cd Cineverse
+          xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
             -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
@@ -45,7 +47,8 @@ jobs:
 
       - name: Run unit tests
         run: |
-          xcodebuild test -project ./Cineverse.xcodeproj -scheme Cineverse \
+          cd Cineverse
+          xcodebuild test -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
             -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
