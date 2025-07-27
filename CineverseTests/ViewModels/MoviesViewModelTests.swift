@@ -16,7 +16,7 @@ final class MoviesViewModelTests {
         var executeCalled = false
         var resultToReturn: Result<[Movie], Error>?
         
-        func execute(completion: @escaping (Result<[Movie], Error>) -> Void) {
+        func execute(page: Int, query: String?, completion: @escaping (Result<[Cineverse.Movie], any Error>) -> Void) {
             executeCalled = true
             if let result = resultToReturn {
                 completion(result)

@@ -16,7 +16,7 @@ final class GetPopularMoviesUseCaseTests {
         var getPopularMoviesCalled = false
         var resultToReturn: Result<[Movie], Error>?
         
-        func getPopularMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
+        func getPopularMovies(page: Int, query: String?, completion: @escaping (Result<[Cineverse.Movie], any Error>) -> Void) {
             getPopularMoviesCalled = true
             if let result = resultToReturn {
                 completion(result)
@@ -57,7 +57,7 @@ final class GetPopularMoviesUseCaseTests {
         
         // When
         var receivedResult: Result<[Movie], Error>?
-        sut.execute { result in
+        sut.execute(page: 1, query: nil) { result in
             receivedResult = result
         }
         
@@ -85,7 +85,7 @@ final class GetPopularMoviesUseCaseTests {
         
         // When
         var receivedResult: Result<[Movie], Error>?
-        sut.execute { result in
+        sut.execute(page: 1, query: nil) { result in
             receivedResult = result
         }
         

@@ -54,6 +54,7 @@ class NetworkService: NetworkServiceProtocol {
                 completion(.success(data))
             case .failure(let error):
                 print("error: \(error)")
+                
                 // Send analytics signal for network error
                 TelemetryService.shared.send(
                     TelemetryService.Signal.networkError,
@@ -62,23 +63,23 @@ class NetworkService: NetworkServiceProtocol {
                         "error": error.localizedDescription
                     ]
                 )
+                
                 // Check if it's a network connectivity error
-                if let error = error as? AFError {
-                    switch error {
-                    case .sessionTaskFailed(let underlyingError):
-                        if let urlError = underlyingError as? URLError {
-                            switch urlError.code {
-                            case .notConnectedToInternet, .networkConnectionLost:
-                                completion(.failure(NetworkError.noConnection))
-                                return
-                            default:
-                                break
-                            }
+                switch error {
+                case .sessionTaskFailed(let underlyingError):
+                    if let urlError = underlyingError as? URLError {
+                        switch urlError.code {
+                        case .notConnectedToInternet, .networkConnectionLost:
+                            completion(.failure(NetworkError.noConnection))
+                            return
+                        default:
+                            break
                         }
-                    default:
-                        break
                     }
+                default:
+                    break
                 }
+                
                 completion(.failure(error))
             }
         }
