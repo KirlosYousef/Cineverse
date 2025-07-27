@@ -34,6 +34,8 @@ jobs:
           xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+            SWIFT_VERSION=5.0 \
+            IPHONEOS_DEPLOYMENT_TARGET=13.0 \
             build
 
       - name: Run unit tests
@@ -41,6 +43,8 @@ jobs:
           xcodebuild test -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+            SWIFT_VERSION=5.0 \
+            IPHONEOS_DEPLOYMENT_TARGET=13.0 \
             -resultBundlePath ./TestResults.xcresult
 
       - name: Upload test results
