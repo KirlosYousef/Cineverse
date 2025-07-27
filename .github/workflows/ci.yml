@@ -45,6 +45,3 @@ jobs:
         with:
           name: test-results
           path: ./TestResults.xcresult
-        with:
-          name: test-results
-          path: ./TestResults.xcresult 
