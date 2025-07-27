@@ -35,10 +35,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-xcode-
 
-              
       - name: Build Cineverse
         run: |
-          cd Cineverse
           xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
@@ -47,11 +45,11 @@ jobs:
 
       - name: Run unit tests
         run: |
-          cd Cineverse
           xcodebuild test -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
             -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
+            -resultBundlePath ~/Library/Developer/Xcode/DerivedData/TestResults.xcresult \
             | xcpretty
 
       - name: Upload test results
@@ -59,4 +57,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult 
+          path: ~/Library/Developer/Xcode/DerivedData/TestResults.xcresult 
