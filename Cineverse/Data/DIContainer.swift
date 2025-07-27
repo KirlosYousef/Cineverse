@@ -38,4 +38,9 @@ final class DIContainer {
     lazy var favoritesService: FavoritesServiceProtocol = {
         return FavoritesService()
     }()
+    
+    /// Provides the service for caching data.
+    lazy var cacheService: CacheServiceProtocol = {
+        return CacheService()
+    }()
 } 

@@ -38,10 +38,11 @@ class MoviesViewController: UIViewController {
     
     private let errorLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .systemRed
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.backgroundColor = .systemRed.withAlphaComponent(0.9)
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -101,10 +102,10 @@ class MoviesViewController: UIViewController {
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            errorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            errorLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            errorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 32)
         ])
     }
     

@@ -71,6 +71,7 @@ class MoviesViewModel {
                     self?.isLastPage = newMovies.count < self?.pageSize ?? 20
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
+                    self?.isLoading = false
                 }
             }
         }

@@ -29,6 +29,12 @@ class NetworkService: NetworkServiceProtocol {
     ///   - parameters: Optional query parameters for the request (e.g., ["page": 2, "query": "batman"]).
     ///   - completion: Completion handler with a Result containing the decoded object or an error.
     func fetch<T: Codable>(from endpoint: String, parameters: [String: Any]? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+        // Check network connectivity first
+        guard NetworkReachabilityManager.default?.isReachable == true else {
+            completion(.failure(NetworkError.noConnection))
+            return
+        }
+        
         var urlString = "\(baseURL)\(endpoint)?api_key=\(apiKey)"
         if let parameters = parameters {
             for (key, value) in parameters {
@@ -40,11 +46,7 @@ class NetworkService: NetworkServiceProtocol {
             completion(.failure(NetworkError.invalidURL))
             return
         }
-        AF.request(url).responseData { rawResponse in
-            if let data = rawResponse.data {
-                print("RAW RESPONSE: \(String(data: data, encoding: .utf8) ?? "<nil>")")
-            }
-        }
+        
         AF.request(url).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let data):
@@ -52,6 +54,23 @@ class NetworkService: NetworkServiceProtocol {
                 completion(.success(data))
             case .failure(let error):
                 print("error: \(error)")
+                // Check if it's a network connectivity error
+                if let error = error as? AFError {
+                    switch error {
+                    case .sessionTaskFailed(let underlyingError):
+                        if let urlError = underlyingError as? URLError {
+                            switch urlError.code {
+                            case .notConnectedToInternet, .networkConnectionLost:
+                                completion(.failure(NetworkError.noConnection))
+                                return
+                            default:
+                                break
+                            }
+                        }
+                    default:
+                        break
+                    }
+                }
                 completion(.failure(error))
             }
         }
@@ -59,9 +78,22 @@ class NetworkService: NetworkServiceProtocol {
 }
 
 /// Errors that can occur during network operations.
-enum NetworkError: Error {
+enum NetworkError: Error, LocalizedError {
     /// The URL provided was invalid.
     case invalidURL
     /// No data was returned from the request.
     case noData
+    /// No internet connection available.
+    case noConnection
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Invalid URL"
+        case .noData:
+            return "No data received"
+        case .noConnection:
+            return "No internet connection. Please check your network settings."
+        }
+    }
 } 
