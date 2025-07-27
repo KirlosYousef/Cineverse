@@ -30,16 +30,14 @@ jobs:
           set -o pipefail && \
           xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -destination '${{ matrix.simulator }}' \
-            GENERATE_INFOPLIST_FILE=YES \
-            build | xcpretty
+                       build | xcpretty
 
       - name: Run unit tests
         run: |
           set -o pipefail && \
           xcodebuild test -project Cineverse.xcodeproj -scheme Cineverse \
             -destination '${{ matrix.simulator }}' \
-            GENERATE_INFOPLIST_FILE=YES \
-            -resultBundlePath ./TestResults.xcresult | xcpretty
+                       -resultBundlePath ./TestResults.xcresult | xcpretty
 
       - name: Upload test results
         if: always()
