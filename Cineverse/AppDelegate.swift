@@ -15,9 +15,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Configure SDWebImage for better memory management
+        loadRocketSimConnect()
         configureSDWebImage()
         configureTelemetryDeck()
         return true
+    }
+    private func loadRocketSimConnect() {
+        #if DEBUG
+        guard (Bundle(path: "/Applications/RocketSim.app/Contents/Frameworks/RocketSimConnectLinker.nocache.framework")?.load() == true) else {
+            print("Failed to load linker framework")
+            return
+        }
+        print("RocketSim Connect successfully linked")
+        #endif
     }
     
     private func configureTelemetryDeck() {

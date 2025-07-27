@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1640"
+   LastUpgradeVersion = "1500"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES"
-      buildArchitectures = "Automatic">
+      runPostActionsOnFailure = "NO">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BC2A7F012E1EBB7300F835A1"
+               BlueprintIdentifier = "4E4AA4DA946AFFD386693130"
                BuildableName = "Cineverse.app"
                BlueprintName = "Cineverse"
                ReferencedContainer = "container:Cineverse.xcodeproj">
@@ -28,20 +28,30 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      shouldAutocreateTestPlan = "YES">
+      onlyGenerateCoverageForSpecifiedTargets = "NO">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4E4AA4DA946AFFD386693130"
+            BuildableName = "Cineverse.app"
+            BlueprintName = "Cineverse"
+            ReferencedContainer = "container:Cineverse.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BC2A7F172E1EBB7700F835A1"
+               BlueprintIdentifier = "EF33119960F1AAB1D6D61FB2"
                BuildableName = "CineverseTests.xctest"
                BlueprintName = "CineverseTests"
                ReferencedContainer = "container:Cineverse.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -57,12 +67,14 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BC2A7F012E1EBB7300F835A1"
+            BlueprintIdentifier = "4E4AA4DA946AFFD386693130"
             BuildableName = "Cineverse.app"
             BlueprintName = "Cineverse"
             ReferencedContainer = "container:Cineverse.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -74,12 +86,14 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BC2A7F012E1EBB7300F835A1"
+            BlueprintIdentifier = "4E4AA4DA946AFFD386693130"
             BuildableName = "Cineverse.app"
             BlueprintName = "Cineverse"
             ReferencedContainer = "container:Cineverse.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
