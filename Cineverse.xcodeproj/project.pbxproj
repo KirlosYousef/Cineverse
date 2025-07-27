@@ -511,6 +511,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				INFOPLIST_FILE = CineverseTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cineverse.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -619,6 +620,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				INFOPLIST_FILE = CineverseTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cineverse.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
