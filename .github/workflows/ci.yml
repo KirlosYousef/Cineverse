@@ -20,41 +20,32 @@ jobs:
         with:
           xcode-version: '15.0'
 
-      - name: Debug directory structure
+      - name: Debug environment
         run: |
           pwd
           ls -la
-          echo "Checking for Xcode project files:"
-          find . -name "*.xcodeproj" -o -name "*.xcworkspace" | head -10
-
-      - name: Cache Xcode derived data
-        uses: actions/cache@v3
-        with:
-          path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-xcode-${{ hashFiles('**/*.xcodeproj') }}
-          restore-keys: |
-            ${{ runner.os }}-xcode-
+          echo "Xcode version:"
+          xcodebuild -version
+          echo "Available simulators:"
+          xcrun simctl list devices available | grep iPhone
 
       - name: Build Cineverse
         run: |
           xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
-            -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
-            build | xcpretty
+            build
 
       - name: Run unit tests
         run: |
           xcodebuild test -project Cineverse.xcodeproj -scheme Cineverse \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
-            -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
-            -resultBundlePath ~/Library/Developer/Xcode/DerivedData/TestResults.xcresult \
-            | xcpretty
+            -resultBundlePath ./TestResults.xcresult
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: ~/Library/Developer/Xcode/DerivedData/TestResults.xcresult 
+          path: ./TestResults.xcresult 

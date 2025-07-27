@@ -27,8 +27,6 @@ buildServer.json
 Packages/
 Package.pins
 Package.resolved
-*.xcodeproj
-*.xcworkspace
 
 # Environment variables and secrets
 .env
