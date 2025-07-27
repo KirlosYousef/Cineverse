@@ -47,6 +47,7 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.cineverse.tests
       GENERATE_INFOPLIST_FILE: YES
+      CURRENT_PROJECT_VERSION: "1"
 
 packages:
   Alamofire:
