@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -70,9 +70,10 @@
 		826CD715B66999C2D6204904 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		8B965856CECB2864F70573A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D2801477020DAF39FD7CC2E /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
-		A27B01565DADCA9E4F8B6130 /* Cineverse.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Cineverse.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7B286D1084C1A0C27F35ABF /* CineverseTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CineverseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A27B01565DADCA9E4F8B6130 /* Cineverse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cineverse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7B286D1084C1A0C27F35ABF /* CineverseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CineverseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8506E682547154C4DF59A99 /* FavoritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
+		BC58FFDA2E36E73900D05461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9AB178828DC43CAEA478FA2 /* GetPopularMoviesUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPopularMoviesUseCaseTests.swift; sourceTree = "<group>"; };
 		DCA5624FC2E2B70AAA22A95E /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		DCB79A0C19E60F5EF4AB0083 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		58C6504537D066A4DE8C762D /* Cineverse */ = {
 			isa = PBXGroup;
 			children = (
+				BC58FFDA2E36E73900D05461 /* Info.plist */,
 				005E1F6D53CB260EE47FCDA1 /* AppDelegate.swift */,
 				74B756773256E0F34415D9AE /* Assets.xcassets */,
 				A92A2911993B897DE4603664 /* LaunchScreen.storyboard */,
@@ -327,7 +329,6 @@
 				65B01F28B334654A13BDE8FB /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				586E29BB8C583204791D444F /* XCRemoteSwiftPackageReference "SwiftSDK" */,
 			);
-			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -505,13 +506,13 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				INFOPLIST_FILE = CineverseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				INFOPLIST_FILE = CineverseTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cineverse.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -614,13 +615,13 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				INFOPLIST_FILE = CineverseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				INFOPLIST_FILE = CineverseTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cineverse.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
