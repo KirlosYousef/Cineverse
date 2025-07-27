@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import TelemetryDeck
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // Configure SDWebImage for better memory management
         configureSDWebImage()
+        configureTelemetryDeck()
         return true
+    }
+    
+    private func configureTelemetryDeck() {
+        let config = TelemetryDeck.Config(appID: "004CB05B-ACDF-42C7-9EDC-D10E2322ECB2")
+        TelemetryDeck.initialize(config: config)
+        TelemetryService.shared.send(TelemetryService.Signal.appStarted)
     }
     
     private func configureSDWebImage() {

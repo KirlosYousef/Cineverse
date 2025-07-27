@@ -9,7 +9,7 @@ import Foundation
 
 /// View model for presenting details of a single movie.
 class MovieDetailsViewModel {
-    private let movie: Movie
+    let movie: Movie
     
     /// The title of the movie.
     var title: String { movie.title }

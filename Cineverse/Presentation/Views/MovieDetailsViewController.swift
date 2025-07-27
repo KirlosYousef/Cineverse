@@ -94,6 +94,14 @@ class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         configure()
+        // Send analytics signal for viewing movie details
+        TelemetryService.shared.send(
+            TelemetryService.Signal.movieDetailsViewed,
+            payload: [
+                "movieId": String(viewModel.movie.id),
+                "title": viewModel.movie.title
+            ]
+        )
     }
     
     /// Sets up the UI components and layout constraints for the details screen.

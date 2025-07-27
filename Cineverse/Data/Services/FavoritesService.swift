@@ -19,14 +19,21 @@ class FavoritesService: FavoritesServiceProtocol {
     /// - Parameter movieId: The unique identifier of the movie to toggle as favorite.
     func toggleFavorite(movieId: Int) {
         var favorites = getFavoriteMovieIds()
-        
-        if favorites.contains(movieId) {
+        let wasFavorite = favorites.contains(movieId)
+        if wasFavorite {
             favorites.removeAll { $0 == movieId }
         } else {
             favorites.append(movieId)
         }
-        
         userDefaults.set(favorites, forKey: favoritesKey)
+        // Send analytics signal only if state changed
+        TelemetryService.shared.send(
+            TelemetryService.Signal.favoriteToggled,
+            payload: [
+                "movieId": String(movieId),
+                "action": wasFavorite ? "removed" : "added"
+            ]
+        )
     }
     
     /// Checks if a movie with the given ID is marked as favorite.
