@@ -1,4 +1,4 @@
-# MovieExplorer
+# Cineverse
 
 A modern iOS application that allows users to explore popular movies using The Movie Database (TMDB) API. Built with Clean Architecture and MVVM design patterns, the app provides a seamless user experience for browsing movies, viewing details, and managing favorites.
 
