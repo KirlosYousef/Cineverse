@@ -26,6 +26,8 @@ class GetPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol {
     /// - Returns: An array of Movie objects.
     /// - Throws: Error that occurs during the fetch operation.
     func execute(page: Int, query: String?) async throws -> [Movie] {
-        return try await repository.getPopularMovies(page: page, query: query)
+        return try await RetryUtility.retry(maxAttempts: 3) {
+            try await self.repository.getPopularMovies(page: page, query: query)
+        }
     }
 } 

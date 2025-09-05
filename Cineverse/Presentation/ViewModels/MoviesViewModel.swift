@@ -29,7 +29,6 @@ class MoviesViewModel {
     private(set) var currentPage: Int = 1
     private(set) var isLastPage: Bool = false
     private(set) var searchQuery: String = ""
-    private var debounceTimer: Timer?
     private let pageSize: Int = 20 // TMDB default
     
     // Task management for cancellation
@@ -86,6 +85,8 @@ class MoviesViewModel {
                     } else {
                         self.movies += newMovies
                     }
+                    
+                    // Check if we've reached the last page
                     self.isLastPage = newMovies.count < self.pageSize
                     self.isLoading = false
                 }
@@ -96,6 +97,11 @@ class MoviesViewModel {
                 await MainActor.run {
                     self.errorMessage = error.localizedDescription
                     self.isLoading = false
+                    
+                    // If this was a pagination request that failed, decrement the page
+                    if !reset {
+                        self.currentPage = max(1, self.currentPage - 1)
+                    }
                 }
             }
         }
@@ -112,12 +118,31 @@ class MoviesViewModel {
     func updateSearchQuery(_ query: String) {
         searchTask?.cancel()
         
-        searchTask = Task {
-            try await Task.sleep(for: .seconds(0.5))
+        let currentQuery = query
+        
+        searchTask = Task { [weak self] in
+            guard let self = self else { return }
             
-            if self.searchQuery != query {
-                self.searchQuery = query
-                self.fetchMovies(reset: true)
+            do {
+                // Debounce delay
+                try await Task.sleep(for: .milliseconds(400))
+                
+                guard !Task.isCancelled else { return }
+                
+                await MainActor.run {
+                    // Double-check the query hasn't changed (stale result prevention)
+                    guard self.searchQuery != currentQuery else { return }
+                    
+                    self.searchQuery = currentQuery
+                    self.fetchMovies(reset: true)
+                }
+            } catch {
+                // Task was cancelled, ignore the error
+                guard !Task.isCancelled else { return }
+                
+                await MainActor.run {
+                    self.errorMessage = "Search failed: \(error.localizedDescription)"
+                }
             }
         }
     }
@@ -144,7 +169,5 @@ class MoviesViewModel {
     func cancelAllTasks() {
         currentTask?.cancel()
         searchTask?.cancel()
-        debounceTimer?.invalidate()
-        debounceTimer = nil
     }
 }

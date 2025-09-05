@@ -35,14 +35,12 @@ class MovieRepository: MovieRepositoryProtocol {
             return cachedMovies
         }
         
-        var endpoint = "/movie/popular"
-        var parameters: [String: Any] = ["page": page]
+        let response: MovieResponse
         if let query = query, !query.isEmpty {
-            endpoint = "/search/movie"
-            parameters["query"] = query
+            response = try await networkService.searchMovies(query: query, page: page)
+        } else {
+            response = try await networkService.fetchPopular(page: page)
         }
-        
-        let response: MovieResponse = try await networkService.fetch(from: endpoint, parameters: parameters)
         
         // Cache the results
         cacheService.set(response.results, forKey: cacheKey)
@@ -50,9 +48,3 @@ class MovieRepository: MovieRepositoryProtocol {
         return response.results
     }
 }
-
-/// Response model for decoding the list of movies from the API.
-struct MovieResponse: Codable {
-    /// The array of popular movies returned by the API.
-    let results: [Movie]
-} 

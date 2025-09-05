@@ -38,3 +38,9 @@ struct Movie: Equatable, Codable, Identifiable {
         return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
     }
 } 
+
+/// Response model for decoding the list of movies from the API.
+struct MovieResponse: Codable {
+    /// The array of popular movies returned by the API.
+    let results: [Movie]
+}
