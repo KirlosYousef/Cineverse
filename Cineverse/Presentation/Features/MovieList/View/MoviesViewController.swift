@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import SwiftUI
 
 /// View controller displaying a grid of movies and handling user interactions.
 class MoviesViewController: UIViewController {
@@ -237,8 +238,9 @@ extension MoviesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = viewModel.movies[indexPath.item]
         let detailsViewModel = MovieDetailsViewModel(movie: movie)
-        let detailsVC = MovieDetailsViewController(viewModel: detailsViewModel)
-        navigationController?.pushViewController(detailsVC, animated: true)
+        let movieDetailView = MovieDetailView(viewModel: detailsViewModel)
+        let hostingController = UIHostingController(rootView: movieDetailView)
+        navigationController?.pushViewController(hostingController, animated: true)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

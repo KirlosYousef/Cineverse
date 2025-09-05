@@ -16,7 +16,7 @@ A modern iOS application that allows users to explore popular movies using The M
 The app follows Clean Architecture principles with MVVM pattern, divided into three main layers:
 
 ### 1. Presentation Layer
-- **Views**: UIKit-based views (`MoviesViewController`, `MovieDetailsViewController`, `MovieCell`)
+- **Views**: UIKit-based views (`MoviesViewController`, `MovieCell`) and SwiftUI views (`MovieDetailView`)
 - **ViewModels**: Handle presentation logic and state management (`MoviesViewModel`, `MovieDetailsViewModel`)
 - Implements data binding for reactive UI updates
 
