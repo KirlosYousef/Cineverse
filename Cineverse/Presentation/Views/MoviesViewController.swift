@@ -77,7 +77,17 @@ class MoviesViewController: UIViewController {
         setupUI()
         searchBar.delegate = self
         bindViewModel()
-        viewModel.fetchMovies(reset: true)
+        Task { @MainActor in
+            viewModel.fetchMovies(reset: true)
+        }
+    }
+    
+    /// Called when the view is about to disappear. Cancels any ongoing tasks.
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Task { @MainActor in
+            viewModel.cancelAllTasks()
+        }
     }
     
     // MARK: - Setup
@@ -188,8 +198,10 @@ extension MoviesViewController: UICollectionViewDataSource {
         cell.configure(with: movie)
         cell.setFavorite(viewModel.isFavorite(movieId: movie.id))
         cell.onFavoriteTapped = { [weak self] movieId in
-            self?.viewModel.toggleFavorite(movieId: movieId)
-            collectionView.reloadItems(at: [indexPath])
+            Task { @MainActor in
+                self?.viewModel.toggleFavorite(movieId: movieId)
+                collectionView.reloadItems(at: [indexPath])
+            }
         }
         return cell
     }
@@ -236,7 +248,9 @@ extension MoviesViewController: UICollectionViewDelegate {
         if offsetY > contentHeight - frameHeight * 1.5 {
             // Near the bottom, load next page
             if let visibleIndexPaths = collectionView.indexPathsForVisibleItems.sorted(by: { $0.item > $1.item }).first {
-                viewModel.loadNextPageIfNeeded(currentIndex: visibleIndexPaths.item)
+                Task { @MainActor in
+                    viewModel.loadNextPageIfNeeded(currentIndex: visibleIndexPaths.item)
+                }
             }
         }
     }
@@ -245,7 +259,9 @@ extension MoviesViewController: UICollectionViewDelegate {
 // MARK: - UISearchBarDelegate
 extension MoviesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.updateSearchQuery(searchText)
+        Task { @MainActor in
+            viewModel.updateSearchQuery(searchText)
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

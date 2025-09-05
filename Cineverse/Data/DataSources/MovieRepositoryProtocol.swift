@@ -14,6 +14,7 @@ protocol MovieRepositoryProtocol {
     /// - Parameters:
     ///   - page: The page number to fetch.
     ///   - query: Optional search query for filtering movies by name.
-    ///   - completion: Completion handler with a Result containing an array of Movie objects or an error.
-    func getPopularMovies(page: Int, query: String?, completion: @escaping (Result<[Movie], Error>) -> Void)
+    /// - Returns: An array of Movie objects.
+    /// - Throws: Error that occurs during the fetch operation.
+    func getPopularMovies(page: Int, query: String?) async throws -> [Movie]
 } 

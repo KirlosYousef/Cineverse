@@ -27,12 +27,12 @@ class NetworkService: NetworkServiceProtocol {
     /// - Parameters:
     ///   - endpoint: The API endpoint to fetch data from (e.g., "/movie/popular").
     ///   - parameters: Optional query parameters for the request (e.g., ["page": 2, "query": "batman"]).
-    ///   - completion: Completion handler with a Result containing the decoded object or an error.
-    func fetch<T: Codable>(from endpoint: String, parameters: [String: Any]? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+    /// - Returns: The decoded object of type T.
+    /// - Throws: NetworkError or other errors that occur during the request.
+    func fetch<T: Codable>(from endpoint: String, parameters: [String: Any]? = nil) async throws -> T {
         // Check network connectivity first
         guard NetworkReachabilityManager.default?.isReachable == true else {
-            completion(.failure(NetworkError.noConnection))
-            return
+            throw NetworkError.noConnection
         }
         
         var urlString = "\(baseURL)\(endpoint)?api_key=\(apiKey)"
@@ -43,35 +43,32 @@ class NetworkService: NetworkServiceProtocol {
             }
         }
         guard let url = URL(string: urlString) else {
-            completion(.failure(NetworkError.invalidURL))
-            return
+            throw NetworkError.invalidURL
         }
         
-        AF.request(url).responseDecodable(of: T.self) { response in
-            switch response.result {
-            case .success(let data):
-                print("data: \(data)")
-                completion(.success(data))
-            case .failure(let error):
-                print("error: \(error)")
-                
-                // Send analytics signal for network error
-                TelemetryService.shared.send(
-                    TelemetryService.Signal.networkError,
-                    payload: [
-                        "endpoint": endpoint,
-                        "error": error.localizedDescription
-                    ]
-                )
-                
-                // Check if it's a network connectivity error
-                switch error {
+        do {
+            let data = try await AF.request(url).serializingDecodable(T.self).value
+            return data
+        } catch {
+            print("error: \(error)")
+            
+            // Send analytics signal for network error
+            TelemetryService.shared.send(
+                TelemetryService.Signal.networkError,
+                payload: [
+                    "endpoint": endpoint,
+                    "error": error.localizedDescription
+                ]
+            )
+            
+            // Check if it's a network connectivity error
+            if let afError = error as? AFError {
+                switch afError {
                 case .sessionTaskFailed(let underlyingError):
                     if let urlError = underlyingError as? URLError {
                         switch urlError.code {
                         case .notConnectedToInternet, .networkConnectionLost:
-                            completion(.failure(NetworkError.noConnection))
-                            return
+                            throw NetworkError.noConnection
                         default:
                             break
                         }
@@ -79,9 +76,9 @@ class NetworkService: NetworkServiceProtocol {
                 default:
                     break
                 }
-                
-                completion(.failure(error))
             }
+            
+            throw error
         }
     }
 }

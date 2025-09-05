@@ -23,8 +23,9 @@ class GetPopularMoviesUseCase: GetPopularMoviesUseCaseProtocol {
     /// - Parameters:
     ///   - page: The page number to fetch.
     ///   - query: Optional search query for filtering movies by name.
-    ///   - completion: Completion handler with a Result containing an array of Movie objects or an error.
-    func execute(page: Int, query: String?, completion: @escaping (Result<[Movie], Error>) -> Void) {
-        repository.getPopularMovies(page: page, query: query, completion: completion)
+    /// - Returns: An array of Movie objects.
+    /// - Throws: Error that occurs during the fetch operation.
+    func execute(page: Int, query: String?) async throws -> [Movie] {
+        return try await repository.getPopularMovies(page: page, query: query)
     }
 } 

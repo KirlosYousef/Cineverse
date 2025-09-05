@@ -14,6 +14,7 @@ protocol NetworkServiceProtocol {
     /// - Parameters:
     ///   - endpoint: The API endpoint to fetch data from (e.g., "/movie/popular").
     ///   - parameters: Optional query parameters for the request (e.g., ["page": 2, "query": "batman"]).
-    ///   - completion: Completion handler with a Result containing the decoded object or an error.
-    func fetch<T: Codable>(from endpoint: String, parameters: [String: Any]?, completion: @escaping (Result<T, Error>) -> Void)
+    /// - Returns: The decoded object of type T.
+    /// - Throws: NetworkError or other errors that occur during the request.
+    func fetch<T: Codable>(from endpoint: String, parameters: [String: Any]?) async throws -> T
 } 

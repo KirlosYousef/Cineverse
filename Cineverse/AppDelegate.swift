@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureTelemetryDeck()
         return true
     }
+    
     private func loadRocketSimConnect() {
         #if DEBUG
         guard (Bundle(path: "/Applications/RocketSim.app/Contents/Frameworks/RocketSimConnectLinker.nocache.framework")?.load() == true) else {

@@ -31,6 +31,10 @@ class MoviesViewModel {
     private(set) var searchQuery: String = ""
     private var debounceTimer: Timer?
     private let pageSize: Int = 20 // TMDB default
+    
+    // Task management for cancellation
+    private var currentTask: Task<Void, Never>?
+    private var searchTask: Task<Void, Error>?
 
     // MARK: - Bindings
     var onMoviesChanged: (() -> Void)?
@@ -49,44 +53,68 @@ class MoviesViewModel {
     }
     
     // MARK: - Public API for ViewController
+    @MainActor
     func fetchMovies(reset: Bool = false) {
+        // Cancel any existing task
+        currentTask?.cancel()
+        
         if isLoading { return }
         if reset {
             currentPage = 1
             isLastPage = false
             movies = []
         }
+        
         isLoading = true
         errorMessage = nil
-        getPopularMoviesUseCase.execute(page: currentPage, query: searchQuery.isEmpty ? nil : searchQuery) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let newMovies):
+        
+        currentTask = Task { [weak self] in
+            guard let self = self else { return }
+            
+            do {
+                let newMovies = try await getPopularMoviesUseCase.execute(
+                    page: currentPage, 
+                    query: searchQuery.isEmpty ? nil : searchQuery
+                )
+                
+                // Check if task was cancelled
+                guard !Task.isCancelled else { return }
+                
+                await MainActor.run {
                     if reset {
-                        self?.movies = newMovies
+                        self.movies = newMovies
                     } else {
-                        self?.movies += newMovies
+                        self.movies += newMovies
                     }
-                    self?.isLastPage = newMovies.count < self?.pageSize ?? 20
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                    self?.isLoading = false
+                    self.isLastPage = newMovies.count < self.pageSize
+                    self.isLoading = false
+                }
+            } catch {
+                // Check if task was cancelled
+                guard !Task.isCancelled else { return }
+                
+                await MainActor.run {
+                    self.errorMessage = error.localizedDescription
+                    self.isLoading = false
                 }
             }
         }
     }
 
+    @MainActor
     func loadNextPageIfNeeded(currentIndex: Int) {
         guard !isLastPage, !isLoading, currentIndex >= movies.count - 5 else { return }
         currentPage += 1
         fetchMovies(reset: false)
     }
 
+    @MainActor
     func updateSearchQuery(_ query: String) {
-        debounceTimer?.invalidate()
-        debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
-            guard let self = self else { return }
+        searchTask?.cancel()
+        
+        searchTask = Task {
+            try await Task.sleep(for: .seconds(0.5))
+            
             if self.searchQuery != query {
                 self.searchQuery = query
                 self.fetchMovies(reset: true)
@@ -105,8 +133,18 @@ class MoviesViewModel {
     /// Toggles the favorite status for a movie with the given ID and notifies listeners.
     ///
     /// - Parameter movieId: The unique identifier of the movie to toggle as favorite.
+    @MainActor
     func toggleFavorite(movieId: Int) {
         favoritesService.toggleFavorite(movieId: movieId)
         onMoviesChanged?()
+    }
+    
+    /// Cancels all ongoing tasks. Call this when the view disappears or is deallocated.
+    @MainActor
+    func cancelAllTasks() {
+        currentTask?.cancel()
+        searchTask?.cancel()
+        debounceTimer?.invalidate()
+        debounceTimer = nil
     }
 }
