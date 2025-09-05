@@ -22,6 +22,7 @@ class MovieCell: UICollectionViewCell {
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isAccessibilityElement = false
         return view
     }()
     
@@ -37,7 +38,8 @@ class MovieCell: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .white
         label.numberOfLines = 2
         label.textAlignment = .left
@@ -61,6 +63,7 @@ class MovieCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isAccessibilityElement = false
         return view
     }()
     
@@ -68,6 +71,7 @@ class MovieCell: UICollectionViewCell {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isAccessibilityElement = false
         return view
     }()
     
@@ -159,6 +163,28 @@ class MovieCell: UICollectionViewCell {
         let placeholderImage = UIImage(systemName: "film")?.withTintColor(.systemGray3.withAlphaComponent(0.4),
                                                                            renderingMode: .alwaysOriginal)
         posterImageView.sd_setImage(with: movie.posterURL, placeholderImage: placeholderImage)
+        
+        // Configure accessibility
+        setupAccessibility(for: movie)
+    }
+    
+    /// Sets up accessibility properties for the cell and its elements.
+    ///
+    /// - Parameter movie: The movie to configure accessibility for.
+    private func setupAccessibility(for movie: Movie) {
+        // Extract year from release date
+        let year = String(movie.releaseDate.prefix(4))
+        
+        // Configure cell accessibility - make the cell the main accessible element
+        isAccessibilityElement = true
+        accessibilityLabel = "\(movie.title), \(year)"
+        accessibilityTraits = [.button]
+        accessibilityHint = "Double tap to view movie details"
+        accessibilityIdentifier = "movie_cell_\(movie.id)"
+        
+        // Hide individual elements from accessibility since the cell handles it
+        posterImageView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = false
     }
     
     /// Sets the favorite button's selected state.
@@ -166,6 +192,11 @@ class MovieCell: UICollectionViewCell {
     /// - Parameter isFavorite: Whether the movie is marked as favorite.
     func setFavorite(_ isFavorite: Bool) {
         favoriteButton.isSelected = isFavorite
+        
+        // Update accessibility properties when favorite state changes
+        let favoriteState = isFavorite ? "favorited" : "not favorited"
+        favoriteButton.accessibilityLabel = "Movie is \(favoriteState)"
+        favoriteButton.accessibilityHint = "Double tap to \(isFavorite ? "remove from" : "add to") favorites"
     }
     
     // MARK: - Actions
@@ -184,5 +215,11 @@ class MovieCell: UICollectionViewCell {
         favoriteButton.isSelected = false
         movieId = nil
         onFavoriteTapped = nil
+        
+        // Reset accessibility properties
+        accessibilityLabel = nil
+        accessibilityHint = nil
+        accessibilityIdentifier = nil
+        accessibilityTraits = []
     }
 }

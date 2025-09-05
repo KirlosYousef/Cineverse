@@ -72,6 +72,7 @@ struct MovieDetailView: View {
                         Image(systemName: "photo")
                             .font(.system(size: 50))
                             .foregroundColor(.gray)
+                            .accessibilityHidden(true)
                     )
             }
             .frame(height: geometry.size.height * 0.6)
@@ -79,6 +80,7 @@ struct MovieDetailView: View {
             .clipped()
             .accessibilityLabel("Movie poster for \(viewModel.title)")
             .accessibilityAddTraits(.isImage)
+            .accessibilityIdentifier("movie_detail_poster")
             
             // Dark overlay
             Rectangle()
@@ -93,26 +95,29 @@ struct MovieDetailView: View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(viewModel.title)
-                    .font(.system(size: 28, weight: .bold, design: .default))
+                    .font(.largeTitle)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.leading)
                     .accessibilityLabel("Movie title: \(viewModel.title)")
                     .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("movie_detail_title")
                 
                 Text(viewModel.releaseDate)
-                    .font(.system(size: 15, weight: .medium, design: .default))
+                    .font(.subheadline)
                     .foregroundColor(.gray)
                     .accessibilityLabel("Release date: \(viewModel.releaseDate)")
+                    .accessibilityIdentifier("movie_detail_release_date")
             }
             .padding(.top, 32)
             .padding(.horizontal, 20)
             
             VStack(alignment: .leading, spacing: 0) {
                 Text(viewModel.overview)
-                    .font(.system(size: 16, weight: .regular, design: .default))
+                    .font(.body)
                     .foregroundColor(.white)
                     .lineSpacing(4)
                     .accessibilityLabel("Movie overview: \(viewModel.overview)")
+                    .accessibilityIdentifier("movie_detail_overview")
             }
             .padding(.top, 24)
             .padding(.horizontal, 20)
@@ -148,7 +153,7 @@ struct MovieDetailView: View {
                 .accessibilityLabel("Loading movie details")
             
             Text("Loading movie details...")
-                .font(.system(size: 16, weight: .medium, design: .default))
+                .font(.body)
                 .foregroundColor(.white)
                 .accessibilityHidden(true) // ProgressView already announces loading
         }
@@ -164,33 +169,18 @@ struct MovieDetailView: View {
                 .accessibilityHidden(true)
             
             Text("Error Loading Movie")
-                .font(.system(size: 20, weight: .semibold, design: .default))
+                .font(.title2)
                 .foregroundColor(.white)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("error_title")
             
             Text(message)
-                .font(.system(size: 16, weight: .regular, design: .default))
+                .font(.body)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
                 .accessibilityLabel("Error message: \(message)")
-            
-            Button(action: {
-                // TODO: Implement retry functionality
-            }) {
-                Text("Try Again")
-                    .font(.system(size: 16, weight: .medium, design: .default))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.blue.opacity(0.8))
-                    )
-            }
-            .accessibilityLabel("Try again")
-            .accessibilityHint("Double tap to retry loading the movie details")
-            .accessibilityAddTraits(.isButton)
+                .accessibilityIdentifier("error_message_detail")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 32)

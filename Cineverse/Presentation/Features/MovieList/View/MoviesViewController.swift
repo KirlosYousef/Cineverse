@@ -26,6 +26,8 @@ class MoviesViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.identifier)
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.accessibilityLabel = "Movies grid"
+        collectionView.accessibilityIdentifier = "movies_collection_view"
         return collectionView
     }()
     
@@ -34,18 +36,23 @@ class MoviesViewController: UIViewController {
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
         indicator.color = .white
+        indicator.accessibilityLabel = "Loading movies"
+        indicator.accessibilityIdentifier = "loading_indicator"
         return indicator
     }()
     
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.numberOfLines = 0
         label.backgroundColor = .systemRed.withAlphaComponent(0.9)
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.accessibilityTraits = [.staticText]
+        label.accessibilityIdentifier = "error_message"
         return label
     }()
     
@@ -64,6 +71,9 @@ class MoviesViewController: UIViewController {
         ]
         searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search movies by name",
                                                                              attributes: attributes)
+        searchBar.accessibilityLabel = "Search movies"
+        searchBar.accessibilityHint = "Enter movie title to search"
+        searchBar.accessibilityIdentifier = "search_bar"
         return searchBar
     }()
     
@@ -118,6 +128,14 @@ class MoviesViewController: UIViewController {
             errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 32)
         ])
+        
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        // Configure navigation bar accessibility
+        navigationController?.navigationBar.accessibilityLabel = "Movies navigation"
+        navigationController?.navigationBar.accessibilityIdentifier = "movies_navigation_bar"
     }
     
     /// Configures the navigation bar appearance and title.
@@ -127,7 +145,7 @@ class MoviesViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.white,
-            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
+            .font: UIFont.preferredFont(forTextStyle: .headline)
         ]
         
         title = "Movies"
