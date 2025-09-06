@@ -7,12 +7,12 @@
 
 import Testing
 import Foundation
+import Combine
 @testable import Cineverse
 
-final class MovieDetailsViewModelTests {
-    // MARK: - Properties
+struct MovieDetailsViewModelTests {
+    // MARK: - Test Data
     
-    var sut: MovieDetailsViewModel!
     let testMovie = Movie(
         id: 1,
         title: "Test Movie",
@@ -22,63 +22,55 @@ final class MovieDetailsViewModelTests {
         voteAverage: 8.5
     )
     
-    // MARK: - Setup & Teardown
-    
-    func setUp() {
-        sut = MovieDetailsViewModel(movie: testMovie)
-    }
-    
-    func tearDown() {
-        sut = nil
-    }
+    let movieWithoutPoster = Movie(
+        id: 2,
+        title: "No Poster Movie",
+        overview: "Test Overview",
+        posterPath: nil,
+        releaseDate: "2025-07-10",
+        voteAverage: 8.5
+    )
     
     // MARK: - Tests
     
     @Test("View model correctly exposes movie title")
+    @MainActor
     func testMovieTitle() {
-        setUp()
-        defer { tearDown() }
+        // Given
+        let sut = MovieDetailsViewModel(movie: testMovie)
         
+        // Then
         #expect(sut.title == testMovie.title)
     }
     
     @Test("View model correctly exposes movie overview")
+    @MainActor
     func testMovieOverview() {
-        setUp()
-        defer { tearDown() }
+        // Given
+        let sut = MovieDetailsViewModel(movie: testMovie)
         
+        // Then
         #expect(sut.overview == testMovie.overview)
     }
     
     @Test("View model correctly exposes movie release date")
+    @MainActor
     func testMovieReleaseDate() {
-        setUp()
-        defer { tearDown() }
+        // Given
+        let sut = MovieDetailsViewModel(movie: testMovie)
         
+        // Then
         #expect(sut.releaseDate == testMovie.releaseDate)
     }
     
     @Test("View model correctly constructs poster URL")
+    @MainActor
     func testMoviePosterURL() {
-        setUp()
-        defer { tearDown() }
+        // Given
+        let sut = MovieDetailsViewModel(movie: testMovie)
         
+        // Then
         #expect(sut.posterURL == testMovie.posterURL)
-    }
-    
-    @Test("View model handles nil poster path")
-    func testNilPosterURL() {
-        let movieWithoutPoster = Movie(
-            id: 2,
-            title: "No Poster Movie",
-            overview: "Test Overview",
-            posterPath: nil,
-            releaseDate: "2025-07-10",
-            voteAverage: 8.5
-        )
-        sut = MovieDetailsViewModel(movie: movieWithoutPoster)
-        defer { tearDown() }
-        
-        #expect(sut.posterURL == nil)
+        #expect(sut.posterURL?.absoluteString == "https://image.tmdb.org/t/p/w500/test-poster.jpg")
     }
 } 

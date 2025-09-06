@@ -9,46 +9,38 @@ import Testing
 import Foundation
 @testable import Cineverse
 
-final class GetPopularMoviesUseCaseTests {
+struct GetPopularMoviesUseCaseTests {
     // MARK: - Test Doubles
     
     class MockMovieRepository: MovieRepositoryProtocol {
         var getPopularMoviesCalled = false
+        var lastPage: Int?
+        var lastQuery: String?
         var resultToReturn: Result<[Movie], Error>?
         
-        func getPopularMovies(page: Int, query: String?, completion: @escaping (Result<[Cineverse.Movie], any Error>) -> Void) {
+        func getPopularMovies(page: Int, query: String?) async throws -> [Movie] {
             getPopularMoviesCalled = true
+            lastPage = page
+            lastQuery = query
             if let result = resultToReturn {
-                completion(result)
+                switch result {
+                case .success(let movies):
+                    return movies
+                case .failure(let error):
+                    throw error
+                }
             }
+            return []
         }
-    }
-    
-    // MARK: - Properties
-    
-    var sut: GetPopularMoviesUseCase!
-    var mockRepository: MockMovieRepository!
-    
-    // MARK: - Setup & Teardown
-    
-    func setUp() {
-        mockRepository = MockMovieRepository()
-        sut = GetPopularMoviesUseCase(repository: mockRepository)
-    }
-    
-    func tearDown() {
-        sut = nil
-        mockRepository = nil
     }
     
     // MARK: - Tests
     
     @Test("Use case successfully fetches movies from repository")
     func testExecuteSuccess() async throws {
-        setUp()
-        defer { tearDown() }
-        
         // Given
+        let mockRepository = MockMovieRepository()
+        let sut = GetPopularMoviesUseCase(repository: mockRepository)
         let expectedMovies = [
             Movie(id: 1, title: "Test Movie 1", overview: "Overview 1", posterPath: "/poster1.jpg", releaseDate: "2025-07-10", voteAverage: 7.5),
             Movie(id: 2, title: "Test Movie 2", overview: "Overview 2", posterPath: "/poster2.jpg", releaseDate: "2025-07-10", voteAverage: 9.0)
@@ -56,52 +48,53 @@ final class GetPopularMoviesUseCaseTests {
         mockRepository.resultToReturn = .success(expectedMovies)
         
         // When
-        var receivedResult: Result<[Movie], Error>?
-        sut.execute(page: 1, query: nil) { result in
-            receivedResult = result
-        }
+        let movies = try await sut.execute(page: 1, query: nil)
         
         // Then
-        try await Task.sleep(nanoseconds: 100_000_000)
         #expect(mockRepository.getPopularMoviesCalled)
-        
-        switch receivedResult {
-        case .success(let movies):
-            #expect(movies.map(\.id) == expectedMovies.map(\.id))
-            #expect(movies.map(\.title) == expectedMovies.map(\.title))
-        case .failure, .none:
-            #expect(Bool(false), "Expected success with movies, but got \(String(describing: receivedResult))")
-        }
+        #expect(mockRepository.lastPage == 1)
+        #expect(mockRepository.lastQuery == nil)
+        #expect(movies.count == 2)
+        #expect(movies[0].id == 1)
+        #expect(movies[0].title == "Test Movie 1")
+        #expect(movies[1].id == 2)
+        #expect(movies[1].title == "Test Movie 2")
     }
     
     @Test("Use case properly handles repository errors")
     func testExecuteFailure() async throws {
-        setUp()
-        defer { tearDown() }
-        
         // Given
+        let mockRepository = MockMovieRepository()
+        let sut = GetPopularMoviesUseCase(repository: mockRepository)
         let expectedError = NSError(domain: "test", code: -1, userInfo: [NSLocalizedDescriptionKey: "Test error"])
         mockRepository.resultToReturn = .failure(expectedError)
         
-        // When
-        var receivedResult: Result<[Movie], Error>?
-        sut.execute(page: 1, query: nil) { result in
-            receivedResult = result
+        // When & Then
+        do {
+            _ = try await sut.execute(page: 1, query: nil)
+            Issue.record("Expected error to be thrown")
+        } catch {
+            #expect(mockRepository.getPopularMoviesCalled)
+            let nsError = error as NSError
+            #expect(nsError.domain == expectedError.domain)
+            #expect(nsError.code == expectedError.code)
+            #expect(nsError.localizedDescription == expectedError.localizedDescription)
         }
+    }
+    
+    @Test("Use case passes correct parameters to repository")
+    func testExecuteWithParameters() async throws {
+        // Given
+        let mockRepository = MockMovieRepository()
+        let sut = GetPopularMoviesUseCase(repository: mockRepository)
+        mockRepository.resultToReturn = .success([])
+        
+        // When
+        _ = try await sut.execute(page: 3, query: "batman")
         
         // Then
-        try await Task.sleep(nanoseconds: 100_000_000) 
         #expect(mockRepository.getPopularMoviesCalled)
-        
-        switch receivedResult {
-        case .success:
-            #expect(Bool(false), "Expected failure, but got success")
-        case .failure(let error as NSError):
-            #expect(error.domain == expectedError.domain)
-            #expect(error.code == expectedError.code)
-            #expect(error.localizedDescription == expectedError.localizedDescription)
-        case .none:
-            #expect(Bool(false), "Expected failure result, but got nil")
-        }
+        #expect(mockRepository.lastPage == 3)
+        #expect(mockRepository.lastQuery == "batman")
     }
 } 

@@ -35,6 +35,7 @@
 		BCC3F0222E6B309F003ACF7B /* RetryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC3F0202E6B309F003ACF7B /* RetryUtility.swift */; };
 		BCC3F02E2E6B8B68003ACF7B /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC3F02D2E6B8B68003ACF7B /* ActionButtonStyle.swift */; };
 		BCC3F0322E6B8BA1003ACF7B /* ActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC3F0312E6B8BA1003ACF7B /* ActionButtons.swift */; };
+		BCC3F0562E6C388A003ACF7B /* CacheServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC3F0432E6C388A003ACF7B /* CacheServiceTests.swift */; };
 		E7C4029B2618CCB0BAD1796F /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08694C9F885D97FBA9668C34 /* MovieRepository.swift */; };
 		E8EFF5C2A83F534A354A2021 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2801477020DAF39FD7CC2E /* MovieCell.swift */; };
 		F402E3965B3237EAA8F86DCC /* MovieDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3037E559BD8023CCC7EA9ADF /* MovieDetailsViewModelTests.swift */; };
@@ -79,6 +80,7 @@
 		BCC3F0202E6B309F003ACF7B /* RetryUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryUtility.swift; sourceTree = "<group>"; };
 		BCC3F02D2E6B8B68003ACF7B /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		BCC3F0312E6B8BA1003ACF7B /* ActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtons.swift; sourceTree = "<group>"; };
+		BCC3F0432E6C388A003ACF7B /* CacheServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceTests.swift; sourceTree = "<group>"; };
 		D9AB178828DC43CAEA478FA2 /* GetPopularMoviesUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPopularMoviesUseCaseTests.swift; sourceTree = "<group>"; };
 		DCA5624FC2E2B70AAA22A95E /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		DCB79A0C19E60F5EF4AB0083 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		35C48CFFF4AB46A14FF37644 /* CineverseTests */ = {
 			isa = PBXGroup;
 			children = (
+				BCC3F0492E6C388A003ACF7B /* Data */,
 				5DF69001F1E11DB201FBDA71 /* UseCases */,
 				CD5188BB193C2F7FE7703903 /* ViewModels */,
 			);
@@ -319,6 +322,22 @@
 			path = Repositories;
 			sourceTree = "<group>";
 		};
+		BCC3F0462E6C388A003ACF7B /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				BCC3F0432E6C388A003ACF7B /* CacheServiceTests.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		BCC3F0492E6C388A003ACF7B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				BCC3F0462E6C388A003ACF7B /* DataSources */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		BF01C504FBFE7EAF65067534 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -475,6 +494,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCC3F0562E6C388A003ACF7B /* CacheServiceTests.swift in Sources */,
 				15B96FF5E2DBBBB9D217016C /* GetPopularMoviesUseCaseTests.swift in Sources */,
 				F402E3965B3237EAA8F86DCC /* MovieDetailsViewModelTests.swift in Sources */,
 				5D7DAFEDAC96C0C3804BE6E0 /* MoviesViewModelTests.swift in Sources */,
@@ -642,7 +662,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cineverse.app/Cineverse";
-				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -704,7 +723,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -753,7 +772,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cineverse.app/Cineverse";
-				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
