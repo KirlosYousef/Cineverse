@@ -24,14 +24,6 @@ jobs:
         run: |
           echo "TMDB_API_KEY = ${{ secrets.TMDB_API_KEY }}" > Secrets.xcconfig
 
-      - name: Verify File Creation and Content
-        run: |
-          echo "--- Checking directory structure ---"
-          ls -R
-
-          echo "--- Checking content of Secrets.xcconfig ---"
-          cat Secrets.xcconfig
-
       - name: Set up Xcode ${{ matrix.xcode }}
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -39,9 +31,10 @@ jobs:
 
       - name: Build Cineverse
         run: |
+          set -o pipefail && \
           xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -destination '${{ matrix.simulator }}' \
-                       build
+                       build | xcpretty
 
       - name: Run unit tests
         run: |
