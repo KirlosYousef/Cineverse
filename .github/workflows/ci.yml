@@ -27,10 +27,9 @@ jobs:
 
       - name: Build Cineverse
         run: |
-          set -o pipefail && \
           xcodebuild -project Cineverse.xcodeproj -scheme Cineverse \
             -destination '${{ matrix.simulator }}' \
-                       build | xcpretty
+                       build
 
       - name: Run unit tests
         run: |
