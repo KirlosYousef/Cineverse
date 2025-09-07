@@ -22,7 +22,7 @@ jobs:
 
       - name: Create Secrets.xcconfig
         run: |
-          echo "TMDB_API_KEY = ${{ secrets.TMDB_API_KEY }}" > Cineverse/Secrets.xcconfig
+          echo "TMDB_API_KEY = ${{ secrets.TMDB_API_KEY }}" > Secrets.xcconfig
 
       - name: Verify File Creation and Content
         run: |
@@ -30,7 +30,7 @@ jobs:
           ls -R
 
           echo "--- Checking content of Secrets.xcconfig ---"
-          cat Cineverse/Secrets.xcconfig
+          cat Secrets.xcconfig
 
       - name: Set up Xcode ${{ matrix.xcode }}
         uses: maxim-lobanov/setup-xcode@v1
