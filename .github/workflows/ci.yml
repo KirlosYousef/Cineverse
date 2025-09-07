@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-- name: Create Secrets.xcconfig
+      - name: Create Secrets.xcconfig
         run: |
           echo "TMDB_API_KEY = ${{ secrets.TMDB_API_KEY }}" > Secrets.xcconfig
 
