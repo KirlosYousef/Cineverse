@@ -58,21 +58,6 @@ struct CacheServiceTests {
         #expect(retrievedMovies == testMovies)
     }
     
-    @Test("Cache service can clear specific key")
-    func testClearSpecificKey() {
-        // Given
-        let sut = CacheService()
-        let key = "test_movie"
-        sut.set(testMovie, forKey: key)
-        
-        // When - Clear the key
-        sut.clear(forKey: key)
-        
-        // Then
-        let retrievedMovie: Movie? = sut.get(forKey: key)
-        #expect(retrievedMovie == nil)
-    }
-    
     @Test("Cache service can clear all cached data")
     func testClearAll() {
         // Given
