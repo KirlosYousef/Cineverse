@@ -20,6 +20,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create Secrets.xcconfig
+        run: |
+          echo "TMDB_API_KEY = ${{ secrets.TMDB_API_KEY }}" > Secrets.xcconfig
+
       - name: Set up Xcode ${{ matrix.xcode }}
         uses: maxim-lobanov/setup-xcode@v1
         with:
